@@ -1,0 +1,19 @@
+{
+  "name": "Web Components",
+  "version": "0.0.0",
+  "authors": [
+    "dpdk"
+  ],
+  "license": "ISC",
+  "homepage": "http://dpdk.nl",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~1.0.8"
+  }
+}

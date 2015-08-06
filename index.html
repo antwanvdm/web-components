@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower/webcomponentsjs/webcomponents.js"></script>
+    <script>
+        window.Polymer = window.Polymer || {};
+        window.Polymer.dom = 'shadow';
+    </script>
+    <link href="bower/polymer/polymer.html" rel="import">
+    <link href="components/awesome-header/index.html" rel="import">
+    <link href="components/awesome-content/index.html" rel="import">
+    <link href="components/awesome-footer/index.html" rel="import">
+</head>
+<body>
+<awesome-header></awesome-header>
+<awesome-content class-name="first">
+    <p class="content">Content baas maken</p>
+</awesome-content>
+<awesome-content>
+    <p class="content">Geen class voor deze divbaas</p>
+</awesome-content>
+<awesome-content class-name="last">
+    <p class="content">Nog veel meer content baas maken!</p>
+</awesome-content>
+<section>
+    <input id="name" type="text"/>
+</section>
+<awesome-footer id="awesome-footer" name=""></awesome-footer>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<dom-module id="awesome-header">
+    <link rel="import" type="css" href="style.css">
+    <template>
+        <header>
+            <h1>{{title}}</h1>
+
+            <p id="paragraph" class="left">{{paragraph}}</p>
+
+            <div>
+                <form id="add-boss" on-submit="addBoawsSubmitHandler">
+                    <input type="text" id="first-name"/>
+                    <input type="text" id="last-name"/>
+                    <input type="submit" value="Voeg toe aan bazenlijst"/>
+                </form>
+            </div>
+            <template is="dom-repeat" items="{{boawses}}">
+                <div>#<span>{{getIndexForBoaws(index)}}</span></div>
+                <div>First name: <span>{{item.first}}</span></div>
+                <div>Last name: <span>{{item.last}}</span></div>
+            </template>
+        </header>
+    </template>
+    <script type="text/javascript" src="main.js"></script>
+</dom-module>
