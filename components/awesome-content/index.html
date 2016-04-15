@@ -1,7 +1,289 @@
 <dom-module id="awesome-content">
-    <link rel="import" type="css" href="style.css">
+    <link rel="import" type="css" href="css/style-0.css">
     <template>
-        <div class$="{{className}}"><content select=".content"></content></div>
+        <script type="text/javascript">
+            jQuery.noConflict();
+            $ = function(selector,context){
+                if (typeof selector === "string") {
+                    var that = document.querySelector("awesome-content").shadowRoot;
+                    return new jQuery.fn.init(that.querySelectorAll(selector));
+                    //return new jQuery.fn.init(selector, that);
+                }else{
+                    return new jQuery.fn.init(selector,context);
+                }
+            };
+            $.fn = $.prototype = jQuery.fn;
+            jQuery.extend($, jQuery);
+        </script>
+
+        <form action="http://hbvtest.rivm.nl/Appointment/Create" method="post">
+            <div class="validation-summary-valid" data-valmsg-summary="true">
+                <ul>
+                    <li style="display:none">
+                </ul>
+            </div>
+            <input data-val="true" data-val-number="The field AvailableTimeslotId must be a number." data-val-required="The AvailableTimeslotId field is required." id="AvailableTimeslotId" name="AvailableTimeslotId" type="hidden" value="0">
+            <div id="divAppointmentWizard">
+                <fieldset>
+                    <legend>Maak een afspraak voor een Hepatitis B vaccinatie</legend>
+                    <script>
+                        function GetExecutiveInstanceDetails()
+                        {
+                            $.ajax({
+                                url: 'http://hbvtest.rivm.nl/Appointment/GetExecutiveInstanceDetailsView',
+                                data: {executiveInstanceId: $('#ExecutiveInstanceId').val()},
+                                type: "post",
+                                dataType: "html",
+                            }).done(function (data)
+                            {
+                                $('#divExecutiveInstanceDetailsView').html(data);
+                                if ($("#HasAgenda").val() == "True") {
+                                    $("#divAppointmentTimeslot").show();
+                                    $("#divNoAgenda").hide();
+                                }
+                                else {
+                                    $("#divAppointmentTimeslot").hide();
+                                    $("#divNoAgenda").show();
+                                }
+                            });
+                        }
+                        ;
+                        function GetFreeTimeslots()
+                        {
+                            $.ajax({
+                                url: 'http://hbvtest.rivm.nl/Appointment/GetFreeTimeslots',
+                                data: {executiveInstanceId: $('#ExecutiveInstanceId').val(), appointmentType: $('#AppointmentType').val()},
+                                type: "post",
+                                dataType: "html",
+                            }).done(function (data)
+                            {
+                                $('#divFreeTimeslots').html(data);
+                            });
+                        }
+                        ;
+                        function TimeslotClick(AvailableTimeslotId)
+                        {
+                            $("#AvailableTimeslotId").val(AvailableTimeslotId);
+                            $("#divClient").show();
+                            $("#divSubmit").show();
+                        }
+                        ;
+                        function SaveAppointment()
+                        {
+                            $.ajax({
+                                url: 'http://hbvtest.rivm.nl/Appointment/Save',
+                                data: {availableTimeslotId: $('#AvailableTimeslotId').val(), appointmentType: $('#AppointmentType').val(), clientEmail: $('#ClientEmail').val(), clientNickName: $('#ClientNickName').val()},
+                                type: "post",
+                                dataType: "html",
+                            }).done(function (data)
+                            {
+                                $('#divAppointmentCreationResult').html(data);
+                                $('#divAppointmentCreationResult').show();
+                            });
+                        }
+                    </script>
+                    <div id="divExecutiveInstance">
+                        <h2>Kies een locatie</h2>
+                        <div id="divExecutiveInstanceSelect">
+                            <select data-val="true" data-val-number="The field ExecutiveInstanceId must be a number." data-val-required="The ExecutiveInstanceId field is required." id="ExecutiveInstanceId" name="ExecutiveInstanceId">
+                                <option value="">-- Kies een locatie --</option>
+                                <option value="579">ALKMAAR-GGD locatie Alkmaar</option>
+                                <option value="862">ALKMAAR-Zevenhuizen</option>
+                                <option value="650">ALMERE-GGD Flevoland, vestiging Almere</option>
+                                <option value="583">AMERSFOORT-GGD MN lokatie Amersfoort</option>
+                                <option value="588">AMSTELVEEN-GGD Amstelland-de Meerlanden</option>
+                                <option value="752">AMSTERDAM-AMC</option>
+                                <option value="800">AMSTERDAM-GGD homocohort, afd. Onderzoek</option>
+                                <option value="1">AMSTERDAM-GGD Nieuwe Achtergracht IZ</option>
+                                <option value="512">AMSTERDAM-GGD soa poli</option>
+                                <option value="734">AMSTERDAM-GGD, AMT overig</option>
+                                <option value="553">AMSTERDAM-GGD, MSW P&amp;G292</option>
+                                <option value="554">AMSTERDAM-GGD, P&amp;G 292</option>
+                                <option value="559">AMSTERDAM-GGD, PNP</option>
+                                <option value="702">APELDOORN-GGD vestiging Apeldoorn</option>
+                                <option value="604">ARNHEM-Arnhem GGD</option>
+                                <option value="652">ASSEN-GGD Drenthe, vestiging Assen</option>
+                                <option value="688">BERGEN OP ZOOM-locatie BERGEN OP ZOOM</option>
+                                <option value="866">BOKKINGSAHANG, DEVENTER-GGD Gelre-ijssel</option>
+                                <option value="630">BREDA-locatie BREDA</option>
+                                <option value="762">BREDA-prostitutie bedrijf</option>
+                                <option value="587">BUSSUM-GGD Gooi &amp; Vechtstreek</option>
+                                <option value="599">DELFT-GGD ZHW vestiging Delft</option>
+                                <option value="664">DEN BOSCH-GGD HvB vestiging Den Bosch</option>
+                                <option value="570">DEN HAAG-Gemeente Den Haag, Dienst OCW, GGD</option>
+                                <option value="586">DEN HELDER-GGD locatie Schagen/Den Helder</option>
+                                <option value="581">DEVENTER-GGD vestiging Deventer</option>
+                                <option value="635">DOETICHEM-GGD Regio Achterhoek</option>
+                                <option value="795">DOETINCHEM-GGD Gelre-IJssel</option>
+                                <option value="872">DORDRECHT-GGD ZHZ</option>
+                                <option value="643">DORDRECHT-GGD Zuid-Holland Zuid</option>
+                                <option value="685">DORDRECHT-GGD Zuid-Holland Zuid Soa-Poli</option>
+                                <option value="848">DORDRECHT-PI Dordrecht</option>
+                                <option value="608">EDE-Ede GGD</option>
+                                <option value="804">EEFDE-JI Rentray, locatie Eefde</option>
+                                <option value="568">EINDHOVEN-GGD locatie Eindhoven</option>
+                                <option value="755">EMMEN-CAD Drenthe, vestiging Emmen</option>
+                                <option value="651">EMMEN-GGD Drenthe, vestiging Emmen</option>
+                                <option value="576">ENSCHEDE-GGD Twente</option>
+                                <option value="573">GOES-GGD Zeeland, vestiging Goes</option>
+                                <option value="823">GOUDA-GGD HM Bleuland</option>
+                                <option value="580">GOUDA-GGD HM lokatie Gouda</option>
+                                <option value="713">GRONINGEN-GGD Groningen MSM-spreekuur</option>
+                                <option value="714">GRONINGEN-GGD Groningen Sekswerkers</option>
+                                <option value="819">GRONINGEN-GGD Groningen Tippelzone</option>
+                                <option value="869">HAARLEM-GGD Soa-poli Haarlem</option>
+                                <option value="645">HAARLEM-GGD vestiging Haarlem</option>
+                                <option value="769">HAARLEM-Prostitutie-locatie</option>
+                                <option value="736">HAARLEM-SOA-poli Kennemerland</option>
+                                <option value="636">HARDERWIJK-GGD locatie Harderwijk</option>
+                                <option value="648">HEEMSKERK-GGD vestiging Heemskerk</option>
+                                <option value="569">HEERLEN-GGD-locatie Heerlen/Geleen</option>
+                                <option value="681">HEERLEN-GGD-MOA</option>
+                                <option value="589">HELMOND-vestiging Helmond</option>
+                                <option value="805">HOOFDDORP-GGD Soa-poli Hoofddorp</option>
+                                <option value="807">HOOFDDORP-GGD vestiging Hoofddorp</option>
+                                <option value="653">HOOGEVEEN-GGD Drenthe, vestiging Hoogeveen</option>
+                                <option value="585">HOORN-GGD locatie Hoorn</option>
+                                <option value="808">IJMUIDEN-GGD vestiging IJmuiden</option>
+                                <option value="590">LEEUWARDEN-GGD Fryslan</option>
+                                <option value="897">Leiden-GGD HM lokatie Leiden</option>
+                                <option value="633">LEIDEN-GGD HM LUMC</option>
+                                <option value="637">LELYSTAD-GGD Flevoland, vestiging Lelystad</option>
+                                <option value="572">MAASTRICHT-GGD -locatie Maastricht</option>
+                                <option value="845">MAASTRICHT-mondriaan verslavingszorg Sittard</option>
+                                <option value="621">MIDDELBURG-GGD Zeeland, vestiging Middelburg</option>
+                                <option value="571">NIJMEGEN-GGD Regio Nijmegen</option>
+                                <option value="666">ROERMOND-Vestiging Roermond</option>
+                                <option value="892">roosendaal-lokatie Roosendaal</option>
+                                <option value="770">ROTETRDAM-Straatdokter</option>
+                                <option value="682">ROTTERDAM-ErasmusMC SOA poli</option>
+                                <option value="577">ROTTERDAM-GGD locatie Rotterdam</option>
+                                <option value="784">ROTTERDAM-Ontmoeting</option>
+                                <option value="582">SPIJKENISSE-GGD locatie Spijkenisse</option>
+                                <option value="618">TERNEUZEN-GGD Zeeland, vestiging Terneuzen</option>
+                                <option value="584">TIEL-GGD Rivierenland</option>
+                                <option value="663">TILBURG-GGD HvB vestiging Tilburg</option>
+                                <option value="574">UTRECHT-GG&amp; GD Utrecht</option>
+                                <option value="626">UTRECHT-HAP</option>
+                                <option value="818">UTRECHT-UMC</option>
+                                <option value="672">VALKENSWAARD-vestiging Valkenswaard</option>
+                                <option value="634">VENLO-Vestiging Venlo</option>
+                                <option value="665">VLAARDINGEN-GGD locatie Vlaardingen</option>
+                                <option value="617">VLISSINGEN-GGD Zeeland, vestiging Vlissingen</option>
+                                <option value="877">WEERT-Vestiging Weert</option>
+                                <option value="646">ZAANDAM-GGD Zaanstreek Waterland</option>
+                                <option value="639">ZEIST-GGD Midden Nederland</option>
+                                <option value="600">ZOETERMEER-GGD ZHW vestiging Zoetermeer</option>
+                                <option value="703">ZUTPHEN-GGD vestiging Zutphen</option>
+                                <option value="578">ZWOLLE-GGD Regio IJssel-Vecht</option>
+                                <option value="846">ZWOLLE-IJsselland</option>
+                            </select></div>
+                        <div id="divExecutiveInstanceDetailsView">
+                        </div>
+                    </div>
+                    <div id="divNoAgenda">
+                        De gekozen locatie beschikt niet over een online agenda. U kunt wel telefonisch een afspraak maken.
+                    </div>
+                    <div id="divAppointmentTimeslot">
+                        <h2>Kies een datum</h2>
+                        <div id="divAppointmentTypeSelect">
+                            <select id="AppointmentType" name="AppointmentType">
+                                <option value="">-- Kies een Afspraaktype --</option>
+                                <option value="1">Eerste afspraak</option>
+                                <option value="0">Vervolgafspraak</option>
+                            </select></div>
+                        <div id="divFreeTimeslots">
+                        </div>
+
+                    </div>
+                    <div id="divClient">
+                        <h2>Geef uw gegevens op</h2>
+                        <div id="divClientMessage">
+                            Gekozen datum voor afspraak: de gekozen datum
+                        </div>
+                        <div id="ClientData">
+                            <div id="divClientEmailLabel">
+                                <label for="ClientEmail">E-mailadres</label>
+                            </div>
+                            <div id="divClientEmailInput">
+                                <input data-val="true" data-val-required="U moet een waarde invullen voor 'E-mailadres'." id="ClientEmail" name="ClientEmail" type="text" value=""><span class="field-validation-valid" data-valmsg-for="ClientEmail" data-valmsg-replace="true"></span>
+                            </div>
+                            <div id="divClientNickNameLabel">
+                                <label for="ClientNickName">Naam</label>
+                            </div>
+                            <div id="divClientNickNameInput">
+                                <input data-val="true" data-val-length="Het veld 'Naam' moet een tekst zijn van minimaal 2 en maximaal 50 tekens." data-val-length-max="50" data-val-length-min="2" data-val-required="U moet een waarde invullen voor 'Naam'." id="ClientNickName" name="ClientNickName" type="text" value=""><span class="field-validation-valid" data-valmsg-for="ClientNickName" data-valmsg-replace="true"></span>
+                            </div>
+                            <div id="divClientLastNameLabel">
+                                <label for="ClientLastName">Achternaam</label>
+                            </div>
+                            <div id="divClientLastNameInput">
+                                <input data-val="true" data-val-length="Het veld 'Achternaam' moet een tekst zijn van minimaal 2 en maximaal 50 tekens." data-val-length-max="50" data-val-length-min="2" id="ClientLastName" name="ClientLastName" type="text" value=""></div>
+                            <div id="divClientPhonenumberLabel">
+                                <label for="ClientPhonenumber">Telefoonnummer</label>
+                            </div>
+                            <div id="divClientPhonenumberInput">
+                                <input data-val="true" data-val-length="Het veld 'Telefoonnummer' moet een tekst zijn van minimaal 10 en maximaal 20 tekens." data-val-length-max="20" data-val-length-min="10" id="ClientPhonenumber" name="ClientPhonenumber" type="text" value=""></div>
+                        </div>
+                    </div>
+                    <div id="divSubmit">
+                        <p>
+                            <input id="btnVerstuur" type="button" value="Verstuur"></p>
+                    </div>
+                    <div id="divAppointmentCreationResult"></div>
+                </fieldset>
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function ()
+                {
+                    // Initial hide of the DIVs depending on input. Check if ExecutiveInstance is selected
+                    if ($("#ExecutiveInstanceId").val() == "") {
+                        $("#divAppointmentTimeslot").hide();
+                        $("#divClient").hide();
+                        $("#divSubmit").hide();
+                        $("#divAppointmentCreationResult").hide();
+                        $("#divNoAgenda").hide();
+                    }
+
+                    // Change event DropDownList ExecutiveInstance
+                    $("#ExecutiveInstanceId").change(function ()
+                    {
+                        $("#divExecutiveInstanceDetailsView").empty();
+                        $("#AppointmentType").val("");
+                        $("#divFreeTimeslots").empty();
+                        $("#divAppointmentTimeslot").hide();
+                        $("#divAppointmentCreationResult").empty();
+                        $("divNoAgenda").empty();
+                        $("#divNoAgenda").hide();
+                        $("#divClient").hide();
+                        $("#divSubmit").hide();
+                        $("#divAppointmentCreationResult").hide();
+                        if ($("#ExecutiveInstanceId").val() != "") {
+                            GetExecutiveInstanceDetails();
+                        }
+                    });
+
+                    // Change event DropDownList AppointmentType
+                    $("#AppointmentType").change(function ()
+                    {
+                        GetFreeTimeslots();
+                    });
+
+                    // Click event Button btnVerstuur
+                    $("#btnVerstuur").click(function ()
+                    {
+                        SaveAppointment();
+                    });
+                });
+            </script>
+        </form>
+
     </template>
     <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="js/script-0.js"></script>
+    <script type="text/javascript" src="js/script-1.js"></script>
+    <script type="text/javascript" src="js/script-2.js"></script>
+    <script type="text/javascript" src="js/script-3.js"></script>
+    <script type="text/javascript" src="js/script-4.js"></script>
+    <script type="text/javascript" src="js/script-5.js"></script>
 </dom-module>
